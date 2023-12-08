@@ -1,0 +1,32 @@
+const { Builder } = require("selenium-webdriver");
+const { runTest, By, until } = require("./test_script");
+
+// Create a shared WebDriver instance outside of the test cases
+const sharedDriver = new Builder().forBrowser("chrome").build();
+
+afterAll(async () => {
+	await sharedDriver.quit();
+});
+
+test("click cart icon navigation to cart page", async () => {
+	await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+		await driver.sleep(1000);
+		// const thirdLi = await driver.findElement(By.className("li-account"))[2];
+		// const thirdLi = await driver.findElement(
+		// 	By.xpath('(//a[@title="Đăng nhập"])')
+		// );
+		// await thirdLi.click();
+		const loginLink = await driver.findElement(
+			By.xpath('//a[@title="Giỏ hàng"]')
+		);
+		await loginLink.click();
+
+		const afterClickUrl = await driver.getCurrentUrl();
+
+		if (afterClickUrl === "https://shopvnb.com/gio-hang") {
+			console.log("URL is correct after clicking on <a>");
+		} else {
+			console.log("URL is incorrect after clicking on <a>");
+		}
+	});
+});
