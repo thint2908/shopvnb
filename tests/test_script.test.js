@@ -215,6 +215,29 @@ describe("Kiểm tra chức các chức năng shop", () => {
 			}
 		);
 	});
+	it("Kiểm tra giỏ hàng có tăng lên khi ấn thêm vào giỏ hàng", async () => {
+		await runTest(
+			sharedDriver,
+			"https://shopvnb.com/vot-cau-long-felet-dome-08-blk-chinh-hang.html",
+			async (driver) => {
+				let count = 0;
+				const addCartBtn = await driver.findElement(
+					By.className("btn_add_cart")
+				);
+				const isClickable = await isElementClickable(driver, addCartBtn);
+				expect(isClickable).toBe(true);
+				// await addCartBtn.click();
+				await driver.sleep(2000);
+
+				const countItem = await driver.findElement(
+					By.xpath("//span[@class='count_item count_item_pr']")
+				);
+				countItem.getText().then((text) => {
+					expect(text).toBe("1");
+				});
+			}
+		);
+	});
 });
 
 describe("Kiểm tra chức năng đăng nhập và thông tin user", () => {
@@ -401,6 +424,530 @@ describe("Kiểm tra chức năng đăng nhập và thông tin user", () => {
 	}, 10000);
 });
 
+describe("Kiểm tra các element có chuyển hướng đúng đường dẫn không?", () => {
+	test("Kiểm tra chuyển hướng trang đăng nhập", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const userIcon = await driver.findElement(
+				By.xpath('//a[@title="Tài khoản"]')
+			);
+			await driver.wait(until.elementIsVisible(userIcon), 5000);
+
+			await driver.actions().move({ origin: userIcon }).perform();
+			const loginButton = await driver.findElement(
+				By.xpath('//a[@title="Đăng nhập"]')
+			);
+			await driver.wait(until.elementIsVisible(loginButton), 5000);
+
+			await loginButton.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/thanh-vien/dang-nhap");
+		});
+	}, 10000);
+
+	test("Kiểm tra chuyển hướng trang đăng ký", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const userIcon = await driver.findElement(
+				By.xpath('//a[@title="Tài khoản"]')
+			);
+			await driver.wait(until.elementIsVisible(userIcon), 5000);
+
+			await driver.actions().move({ origin: userIcon }).perform();
+			const loginButton = await driver.findElement(
+				By.xpath('//a[@title="Đăng ký"]')
+			);
+			await driver.wait(until.elementIsVisible(loginButton), 5000);
+
+			await loginButton.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/thanh-vien/dang-ky");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang tra cứu đơn hàng", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const userIcon = await driver.findElement(
+				By.xpath('//a[@title="Kiểm tra đơn hàng / bảo hành"]')
+			);
+			await driver.wait(until.elementIsVisible(userIcon), 5000);
+
+			await driver.actions().move({ origin: userIcon }).perform();
+			const loginButton = await driver.findElement(
+				By.xpath('//a[@title="Kiểm tra đơn hàng"]')
+			);
+			await driver.wait(until.elementIsVisible(loginButton), 5000);
+
+			await loginButton.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/kiem-tra-don-hang");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang tra cứu bảo hành", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const userIcon = await driver.findElement(
+				By.xpath('//a[@title="Kiểm tra đơn hàng / bảo hành"]')
+			);
+			await driver.wait(until.elementIsVisible(userIcon), 5000);
+
+			await driver.actions().move({ origin: userIcon }).perform();
+			const loginButton = await driver.findElement(
+				By.xpath('//a[@title="Kiểm tra bảo hành"]')
+			);
+			await driver.wait(until.elementIsVisible(loginButton), 5000);
+
+			await loginButton.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/kiem-tra-bao-hanh");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang đổi trả, hoàn tiền", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chinh-sach-doi-tra-hoan-tien.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/chinh-sach-doi-tra-hoan-tien.html"
+			);
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang chính sách bảo hành", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chinh-sach-bao-hanh.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/chinh-sach-bao-hanh.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang xử lí khiếu nại", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chinh-sach-xu-ly-khieu-nai.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/chinh-sach-xu-ly-khieu-nai.html"
+			);
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang chính sách vận chuyển", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chinh-sach-van-chuyen.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/chinh-sach-van-chuyen.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang điều khoản sử dụng", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="dieu-khoan-su-dung.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/dieu-khoan-su-dung.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang chính sách Bảo mật thông tin", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chinh-sach-bao-mat.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/chinh-sach-bao-mat.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang chính sách nhượng quyền", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chinh-sach-nhuong-quyen-shopvnb.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/chinh-sach-nhuong-quyen-shopvnb.html"
+			);
+		});
+	});
+});
+
+describe("Kiểm tra chuyển hướng phần 'HƯỚNG DẪN' [FOOTER]", () => {
+	test("Kiểm tra chuyển hướng trang tập huấn", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="tap-huan-tennis.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/tap-huan-tennis.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang bảng size lining", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="bang-size-lining.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/bang-size-lining.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng cách tập tenis cho người mới", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="cach-tap-tennis-cho-nguoi-moi-choi.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/cach-tap-tennis-cho-nguoi-moi-choi.html"
+			);
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn chọn vợt cho người mới", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath(
+					'//a[@href="huong-dan-cach-chon-vot-cau-long-cho-nguoi-moi-choi.html"]'
+				)
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/huong-dan-cach-chon-vot-cau-long-cho-nguoi-moi-choi.html"
+			);
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn thanh toán", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-thanh-toan.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/huong-dan-thanh-toan.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn kiểm tra bảo hành", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-kiem-tra-bao-hanh.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/kiem-tra-bao-hanh");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn kiểm tra đơn hàng", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-kiem-tra-don-hang.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/kiem-tra-don-hang");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn mua hàng", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-mua-hang.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/huong-dan-mua-hang.html");
+		});
+	});
+});
+
+describe("Kiểm tra chuyển hướng mục sản phẩm cầu lông", () => {
+	it("Kiểm tra chuyển hướng đến trang vợt cầu lông", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="vot-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/vot-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang giày cầu lông", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="giay-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/giay-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang áo cầu lông", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="ao-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/ao-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang váy cầu lông", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="vay-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/vay-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang quần cầu long", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="quan-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/quan-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang túi vợt cầu long", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="tui-vot-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/tui-vot-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang balo cầu long", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="balo-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/balo-cau-long.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang phụ kiên cầu lông", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="phu-kien-cau-long.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/phu-kien-cau-long.html");
+		});
+	});
+});
+
+describe("Kiểm tra chuyển hướng mục sản phẩm tennis", () => {
+	it("Kiểm tra chuyển hướng đến trang vợt cầu lông", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="vot-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/vot-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang giày tennis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="giay-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/giay-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang balo tenis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="balo-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/balo-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang túi tennis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="tui-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/tui-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang chân váy tennis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="chan-vay-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/chan-vay-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang áo tennis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="ao-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/ao-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang balo tennis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="balo-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/balo-tennis.html");
+		});
+	});
+
+	it("Kiểm tra chuyển hướng đến trang phụ kiên tennis", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			const element = await driver.findElement(
+				By.xpath('//a[@href="phu-kien-tennis.html"]')
+			);
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+			expect(currentUrl).toBe("https://shopvnb.com/phu-kien-tennis.html");
+		});
+	});
+});
 // Hàm kiểm tra xem một phần tử có thể click được hay không
 async function isElementClickable(driver, element) {
 	try {

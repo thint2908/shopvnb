@@ -206,6 +206,134 @@ describe("Kiểm tra các element có chuyển hướng đúng đường dẫn k
 	});
 });
 
+describe("Kiểm tra chuyển hướng phần 'HƯỚNG DẪN' [FOOTER]", () => {
+	test("Kiểm tra chuyển hướng trang tập huấn", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="tap-huan-tennis.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/tap-huan-tennis.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang bảng size lining", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="bang-size-lining.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/bang-size-lining.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng cách tập tenis cho người mới", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="cach-tap-tennis-cho-nguoi-moi-choi.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/cach-tap-tennis-cho-nguoi-moi-choi.html"
+			);
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn chọn vợt cho người mới", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath(
+					'//a[@href="huong-dan-cach-chon-vot-cau-long-cho-nguoi-moi-choi.html"]'
+				)
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe(
+				"https://shopvnb.com/huong-dan-cach-chon-vot-cau-long-cho-nguoi-moi-choi.html"
+			);
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn thanh toán", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-thanh-toan.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/huong-dan-thanh-toan.html");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn kiểm tra bảo hành", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-kiem-tra-bao-hanh.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/kiem-tra-bao-hanh");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn kiểm tra đơn hàng", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-kiem-tra-don-hang.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/kiem-tra-don-hang");
+		});
+	});
+
+	test("Kiểm tra chuyển hướng trang hướng dẫn mua hàng", async () => {
+		await runTest(sharedDriver, "https://shopvnb.com/", async (driver) => {
+			await driver.sleep(1000);
+			const element = await driver.findElement(
+				By.xpath('//a[@href="huong-dan-mua-hang.html"]')
+			);
+
+			await element.click();
+
+			const currentUrl = await driver.getCurrentUrl();
+
+			expect(currentUrl).toBe("https://shopvnb.com/huong-dan-mua-hang.html");
+		});
+	});
+});
+
 afterAll(async () => {
 	await sharedDriver.quit();
 });
