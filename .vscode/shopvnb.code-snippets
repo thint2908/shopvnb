@@ -27,5 +27,15 @@
 			"});"
 		],
 		"description": "jest test function"
+	},
+
+	"runtest func": {
+		"prefix": "runtest",
+		"body": [
+			"	await runTest(sharedDriver, \"https://shopvnb.com/\", async (driver) => {",
+					"$1"
+			"	});",
+		],
+		"description": "jest test function"
 	}
 }
